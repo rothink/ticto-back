@@ -24,6 +24,9 @@ class User extends Authenticatable
         'password',
         'role',
         'admin_id',
+        'cpf',
+        'cargo',
+        'data_nascimento',
     ];
 
     /**
@@ -46,6 +49,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'data_nascimento' => 'date',
         ];
     }
 
@@ -73,5 +77,10 @@ class User extends Authenticatable
     public function funcionarios()
     {
         return $this->hasMany(User::class, 'admin_id');
+    }
+
+    public function address()
+    {
+        return $this->hasOne(Address::class);
     }
 }

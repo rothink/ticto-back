@@ -29,6 +29,11 @@ use App\Http\Controllers\CepController;
  *     name="CEP",
  *     description="Endpoints para consulta de CEP"
  * )
+ *
+ * @OA\Tag(
+ *     name="Reports",
+ *     description="Endpoints para relatórios de ponto"
+ * )
  */
 
 // Rotas de autenticação

@@ -348,12 +348,12 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "João Silva"
+                                        "example": "Rodrigo"
                                     },
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "joao@empresa.com"
+                                        "example": "rodrigoluz@ticto.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -367,32 +367,32 @@
                                     },
                                     "cpf": {
                                         "type": "string",
-                                        "example": "123.456.789-00"
+                                        "example": "943.399.260-19"
                                     },
                                     "cargo": {
                                         "type": "string",
-                                        "example": "Desenvolvedor"
+                                        "example": "dev"
                                     },
                                     "data_nascimento": {
                                         "type": "string",
                                         "format": "date",
-                                        "example": "1990-01-15"
+                                        "example": "1989-12-17"
                                     },
                                     "cep": {
                                         "type": "string",
-                                        "example": "01234-567"
+                                        "example": "20011-010"
                                     },
                                     "endereco": {
                                         "type": "string",
-                                        "example": "Rua das Flores, 123"
+                                        "example": "Beco dos Barbeiros"
                                     },
                                     "numero": {
                                         "type": "string",
-                                        "example": "123"
+                                        "example": "902"
                                     },
                                     "complemento": {
                                         "type": "string",
-                                        "example": "Apto 45"
+                                        "example": "apartamento"
                                     },
                                     "bairro": {
                                         "type": "string",
@@ -400,11 +400,11 @@
                                     },
                                     "cidade": {
                                         "type": "string",
-                                        "example": "São Paulo"
+                                        "example": "Rio de Janeiro"
                                     },
                                     "estado": {
                                         "type": "string",
-                                        "example": "SP"
+                                        "example": "RJ"
                                     }
                                 },
                                 "type": "object"
@@ -435,24 +435,24 @@
                                                 },
                                                 "name": {
                                                     "type": "string",
-                                                    "example": "João Silva"
+                                                    "example": "Rodrigo"
                                                 },
                                                 "email": {
                                                     "type": "string",
-                                                    "example": "joao@empresa.com"
+                                                    "example": "rodrigoluz@live.com"
                                                 },
                                                 "cpf": {
                                                     "type": "string",
-                                                    "example": "123.456.789-00"
+                                                    "example": "014.177.091-03"
                                                 },
                                                 "cargo": {
                                                     "type": "string",
-                                                    "example": "Desenvolvedor"
+                                                    "example": "dev"
                                                 },
                                                 "data_nascimento": {
                                                     "type": "string",
                                                     "format": "date",
-                                                    "example": "1990-01-15"
+                                                    "example": "1989-12-17"
                                                 },
                                                 "role": {
                                                     "type": "string",
@@ -466,19 +466,19 @@
                                                         },
                                                         "cep": {
                                                             "type": "string",
-                                                            "example": "01234-567"
+                                                            "example": "20011-010"
                                                         },
                                                         "endereco": {
                                                             "type": "string",
-                                                            "example": "Rua das Flores, 123"
+                                                            "example": "Beco dos Barbeiros"
                                                         },
                                                         "numero": {
                                                             "type": "string",
-                                                            "example": "123"
+                                                            "example": "902"
                                                         },
                                                         "complemento": {
                                                             "type": "string",
-                                                            "example": "Apto 45"
+                                                            "example": "apartamento"
                                                         },
                                                         "bairro": {
                                                             "type": "string",
@@ -486,11 +486,11 @@
                                                         },
                                                         "cidade": {
                                                             "type": "string",
-                                                            "example": "São Paulo"
+                                                            "example": "Rio de Janeiro"
                                                         },
                                                         "estado": {
                                                             "type": "string",
-                                                            "example": "SP"
+                                                            "example": "RJ"
                                                         }
                                                     },
                                                     "type": "object"
@@ -1118,6 +1118,21 @@
         {
             "name": "Reports",
             "description": "Reports"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "sanctum": []
         }
     ]
 }

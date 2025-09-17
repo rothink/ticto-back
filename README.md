@@ -85,9 +85,59 @@ A documentação completa da API está disponível através do **Swagger UI** em
 
 - 📋 **Lista completa** de todos os endpoints disponíveis
 - 🔧 **Parâmetros necessários** para cada endpoint
-- 📝 **Exemplos de requisições** e respostas
+- 📝 **Exemplos de requisições** e respostas funcionais
 - 🧪 **Interface interativa** para testar os endpoints
 - 📖 **Descrições detalhadas** de cada funcionalidade
+- 🔐 **Sistema de autenticação integrado**
+
+### Como usar o Swagger UI:
+
+#### 1. Acesse a documentação
+Abra o navegador em: `http://localhost/api/documentation`
+
+#### 2. Configure a autenticação
+1. Clique no botão **"Authorize" (🔒)** no canto superior direito
+2. Faça login primeiro no endpoint `/api/login`:
+   - Email: `admin@ticto.com`
+   - Password: `123456`
+3. Copie o `token` da resposta
+4. No modal de autorização, digite: `Bearer SEU_TOKEN_AQUI`
+5. Clique em **"Authorize"**
+
+#### 3. Teste os endpoints
+Agora você pode testar todos os endpoints protegidos diretamente no Swagger:
+- ✅ **Criar funcionário** (`POST /api/employees`)
+- ✅ **Listar funcionários** (`GET /api/employees`)
+- ✅ **Registrar ponto** (`POST /api/time-records`)
+- ✅ **Visualizar relatórios** (`GET /api/reports`)
+
+#### 4. Exemplo funcional
+O Swagger já vem com um exemplo funcional para criar funcionários:
+```json
+{
+  "name": "Rodrigo",
+  "email": "rodrigoluz@ticto.com",
+  "cpf": "943.399.260-19",
+  "cargo": "dev",
+  "data_nascimento": "1989-12-17",
+  "cep": "20011-010",
+  "endereco": "Beco dos Barbeiros",
+  "numero": "902",
+  "complemento": "apartamento",
+  "bairro": "Centro",
+  "cidade": "Rio de Janeiro",
+  "estado": "RJ",
+  "password": "123456",
+  "password_confirmation": "123456"
+}
+```
+
+### Regenerar documentação
+Se você fizer alterações no código, regenere a documentação:
+
+```bash
+docker compose exec laravel.test php artisan l5-swagger:generate
+```
 
 ## 🛠️ Comandos úteis
 
@@ -197,6 +247,22 @@ api/
    docker compose logs mysql
    ```
 
+5. **Erro "Unauthenticated" no Swagger**:
+   - Certifique-se de fazer login primeiro no endpoint `/api/login`
+   - Copie o token completo da resposta
+   - Use o formato correto: `Bearer SEU_TOKEN_AQUI`
+   - Verifique se o botão "Authorize" está configurado
+
+6. **Erro "Acesso negado" ao criar funcionário**:
+   - Use as credenciais do admin: `admin@ticto.com` / `123456`
+   - Apenas usuários com `role = 'admin'` podem criar funcionários
+
+7. **Swagger não mostra botão "Authorize"**:
+   ```bash
+   # Regenere a documentação
+   docker compose exec laravel.test php artisan l5-swagger:generate
+   ```
+
 ### Logs úteis:
 
 ```bash
@@ -221,8 +287,51 @@ docker compose logs -f redis
 
 A API utiliza **Laravel Sanctum** para autenticação. Os endpoints protegidos requerem:
 
-1. **Login** para obter o token
-2. **Header Authorization**: `Bearer {token}`
+### 1. Credenciais de usuário admin
+
+O sistema vem com um usuário admin pré-configurado:
+- **Email**: `admin@ticto.com`
+- **Senha**: `123456`
+- **Role**: `admin` (necessário para criar funcionários)
+
+### 2. Como fazer login
+
+**Endpoint**: `POST /api/login`
+
+```json
+{
+  "email": "admin@ticto.com",
+  "password": "123456"
+}
+```
+
+**Resposta de sucesso**:
+```json
+{
+  "success": true,
+  "message": "Login realizado com sucesso",
+  "user": {
+    "id": 1,
+    "name": "admin",
+    "email": "admin@ticto.com",
+    "role": "admin"
+  },
+  "token": "1|abc123def456..."
+}
+```
+
+### 3. Usar o token
+
+Copie o `token` da resposta e inclua no header das requisições:
+
+```
+Authorization: Bearer 1|abc123def456...
+```
+
+### 4. Permissões
+
+- **Admin**: Pode criar, editar, listar e excluir funcionários
+- **Employer**: Pode registrar ponto e visualizar seus próprios dados
 
 ## 🧪 Testes
 

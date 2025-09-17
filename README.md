@@ -1,64 +1,241 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Ticto Backend - API Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Backend do sistema de ponto eletrônico desenvolvido com Laravel 11.
 
-## About Laravel
+## 📋 Pré-requisitos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Docker
+- Docker Compose
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Como executar o projeto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1º Passo - Clone do projeto
 
-## Learning Laravel
+```bash
+git clone https://github.com/rothink/ticto-back
+cd ticto-back
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 2º Passo - Configuração do ambiente
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Crie o arquivo `.env` baseado no `.env.example` (se existir) ou configure as variáveis de ambiente necessárias:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+# Exemplo de configuração básica do .env
+APP_NAME=Ticto
+APP_ENV=local
+APP_KEY=base64:SUA_CHAVE_AQUI
+APP_DEBUG=true
+APP_URL=http://localhost
 
-## Laravel Sponsors
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=sail
+DB_PASSWORD=password
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Configurações do Laravel Sail
+WWWGROUP=1000
+WWWUSER=1000
+APP_PORT=80
+VITE_PORT=5173
+```
 
-### Premium Partners
+### 3º Passo - Subir os containers
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Execute o comando para subir todos os containers:
 
-## Contributing
+```bash
+docker compose up --build -d
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Este comando irá subir:
+- **Laravel** (aplicação principal)
+- **MySQL** (banco de dados)
+- **Redis** (cache e sessões)
+- **Meilisearch** (busca)
+- **Mailpit** (interceptação de emails)
+- **Selenium** (testes automatizados)
 
-## Code of Conduct
+### 4º Passo - Configuração inicial
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Após os containers estarem rodando, execute as migrações e seeders:
 
-## Security Vulnerabilities
+```bash
+# Acessar o container do Laravel
+docker compose exec laravel.test bash
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Dentro do container, executar:
+php artisan migrate
+php artisan db:seed
+```
 
-## License
+### 5º Passo - Acessar a aplicação
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# ticto-back
-# ticto-back
-# ticto-back
+- **API**: http://localhost
+- **Documentação Swagger**: http://localhost/api/documentation
+
+## 📚 Documentação da API
+
+A documentação completa da API está disponível através do **Swagger UI** em:
+**http://localhost:80/api/documentation**
+
+### O que você encontrará no Swagger:
+
+- 📋 **Lista completa** de todos os endpoints disponíveis
+- 🔧 **Parâmetros necessários** para cada endpoint
+- 📝 **Exemplos de requisições** e respostas
+- 🧪 **Interface interativa** para testar os endpoints
+- 📖 **Descrições detalhadas** de cada funcionalidade
+
+## 🛠️ Comandos úteis
+
+### Gerenciamento de containers
+
+```bash
+# Parar os containers
+docker compose down
+
+# Ver logs dos containers
+docker compose logs -f
+
+# Ver logs específicos do Laravel
+docker compose logs -f laravel.test
+
+# Reiniciar containers
+docker compose restart
+```
+
+### Comandos Laravel
+
+```bash
+# Acessar o container do Laravel
+docker compose exec laravel.test bash
+
+# Executar migrações
+docker compose exec laravel.test php artisan migrate
+
+# Executar seeders
+docker compose exec laravel.test php artisan db:seed
+
+# Limpar cache
+docker compose exec laravel.test php artisan cache:clear
+
+# Limpar configuração
+docker compose exec laravel.test php artisan config:clear
+
+# Executar testes
+docker compose exec laravel.test php artisan test
+
+# Gerar chave da aplicação
+docker compose exec laravel.test php artisan key:generate
+```
+
+## 🗄️ Serviços disponíveis
+
+| Serviço | URL | Porta | Descrição |
+|---------|-----|-------|-----------|
+| **Laravel API** | http://localhost | 80 | API principal |
+| **MySQL** | localhost | 3306 | Banco de dados |
+| **Redis** | localhost | 6379 | Cache e sessões |
+| **Meilisearch** | http://localhost:7700 | 7700 | Motor de busca |
+| **Mailpit** | http://localhost:8025 | 8025 | Interceptação de emails |
+
+## 🏗️ Estrutura do projeto
+
+```
+api/
+├── app/
+│   ├── Http/Controllers/    # Controllers da API
+│   ├── Models/             # Modelos Eloquent
+│   ├── Services/           # Serviços de negócio
+│   └── Repositories/       # Repositórios
+├── database/
+│   ├── migrations/         # Migrações do banco
+│   └── seeders/           # Seeders para dados iniciais
+├── routes/
+│   └── api.php            # Rotas da API
+├── config/                # Configurações
+└── docker-compose.yml     # Configuração Docker
+```
+
+## 🔧 Tecnologias utilizadas
+
+- **Laravel 11** - Framework PHP
+- **MySQL 8.0** - Banco de dados
+- **Redis** - Cache e sessões
+- **Laravel Sanctum** - Autenticação API
+- **Swagger/OpenAPI** - Documentação da API
+- **Laravel Sail** - Ambiente Docker
+
+## 🐛 Solução de problemas
+
+### Problemas comuns:
+
+1. **Porta 80 já em uso**:
+   ```bash
+   # Verificar o que está usando a porta
+   sudo lsof -i :80
+   # Ou alterar a porta no .env: APP_PORT=8080
+   ```
+
+2. **Erro de permissão**:
+   ```bash
+   sudo chown -R $USER:$USER .
+   ```
+
+3. **Container não sobe**:
+   ```bash
+   docker compose down
+   docker compose up --build -d
+   ```
+
+4. **Erro de banco de dados**:
+   ```bash
+   # Verificar se o MySQL está rodando
+   docker compose logs mysql
+   ```
+
+### Logs úteis:
+
+```bash
+# Logs do Laravel
+docker compose logs -f laravel.test
+
+# Logs do MySQL
+docker compose logs -f mysql
+
+# Logs do Redis
+docker compose logs -f redis
+```
+
+## 📝 Notas importantes
+
+- O banco de dados SQLite está configurado por padrão, mas o Docker Compose usa MySQL
+- As migrações são executadas automaticamente quando o container sobe
+- A documentação do Swagger é gerada automaticamente baseada nas anotações do código
+- O frontend está configurado para se comunicar com esta API na porta 80
+
+## 🔐 Autenticação
+
+A API utiliza **Laravel Sanctum** para autenticação. Os endpoints protegidos requerem:
+
+1. **Login** para obter o token
+2. **Header Authorization**: `Bearer {token}`
+
+## 🧪 Testes
+
+```bash
+# Executar todos os testes
+docker compose exec laravel.test php artisan test
+
+# Executar testes específicos
+docker compose exec laravel.test php artisan test --filter=NomeDoTeste
+```
+
+## 📊 Monitoramento
+
+- **Logs da aplicação**: `storage/logs/laravel.log`
+- **Logs do Docker**: `docker compose logs -f`
+- **Status dos containers**: `docker compose ps`

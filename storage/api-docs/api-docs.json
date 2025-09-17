@@ -95,6 +95,65 @@
                 ]
             }
         },
+        "/api/ponto": {
+            "post": {
+                "tags": [
+                    "Ponto"
+                ],
+                "summary": "Registra ponto do funcionário",
+                "operationId": "e73f0e9c8ad18f25efe120cf9efcd2c5",
+                "responses": {
+                    "200": {
+                        "description": "Ponto registrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ponto registrado com sucesso"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "horario": {
+                                                    "type": "string",
+                                                    "example": "14:30:25"
+                                                },
+                                                "data": {
+                                                    "type": "string",
+                                                    "example": "17/09/2025"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuário não autenticado"
+                    },
+                    "403": {
+                        "description": "Apenas funcionários podem registrar ponto"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/users": {
             "get": {
                 "tags": [
@@ -228,6 +287,10 @@
         {
             "name": "Authentication",
             "description": "Operações de autenticação"
+        },
+        {
+            "name": "Ponto",
+            "description": "Operações de registro de ponto"
         },
         {
             "name": "Users",

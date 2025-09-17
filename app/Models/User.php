@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'admin_id',
     ];
 
     /**
@@ -62,5 +63,15 @@ class User extends Authenticatable
     public function isEmployer(): bool
     {
         return $this->role === 'employer';
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
+    }
+
+    public function funcionarios()
+    {
+        return $this->hasMany(User::class, 'admin_id');
     }
 }

@@ -23,6 +23,10 @@ class UserSeeder extends Seeder
             'email' => 'employer@ticto.com',
             'password' => Hash::make('123456'),
             'role' => 'employer',
+            'cpf' => '123.456.789-09',
+            'cargo' => 'Desenvolvedor',
+            'data_nascimento' => '1990-05-15',
+            'admin_id' => 1,
         ]);
     }
 }

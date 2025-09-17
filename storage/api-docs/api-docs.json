@@ -853,6 +853,122 @@
                 ]
             }
         },
+        "/api/reports/timeclock": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Lista registros de ponto com informações completas",
+                "description": "Retorna uma listagem de registros de ponto contendo ID do Registro, Nome do Funcionário, Cargo, Idade, Nome do Gestor e Data/Hora Completa do Registro. Utiliza SQL puro com JOINs para performance otimizada.",
+                "operationId": "listarRegistrosPonto",
+                "parameters": [
+                    {
+                        "name": "data_inicio",
+                        "in": "query",
+                        "description": "Data de início para filtro (formato: Y-m-d)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2024-01-01"
+                        }
+                    },
+                    {
+                        "name": "data_fim",
+                        "in": "query",
+                        "description": "Data de fim para filtro (formato: Y-m-d)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2024-12-31"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Registros de ponto retornados com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "registros": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "registro_id": {
+                                                        "description": "ID do registro de ponto",
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nome_funcionario": {
+                                                        "description": "Nome do funcionário",
+                                                        "type": "string",
+                                                        "example": "João Silva"
+                                                    },
+                                                    "cargo": {
+                                                        "description": "Cargo do funcionário",
+                                                        "type": "string",
+                                                        "example": "Desenvolvedor"
+                                                    },
+                                                    "idade": {
+                                                        "description": "Idade do funcionário",
+                                                        "type": "integer",
+                                                        "example": 30
+                                                    },
+                                                    "nome_gestor": {
+                                                        "description": "Nome do gestor",
+                                                        "type": "string",
+                                                        "example": "Maria Santos"
+                                                    },
+                                                    "data_hora_completa": {
+                                                        "description": "Data e hora completa do registro",
+                                                        "type": "string",
+                                                        "example": "15/01/2024 14:30:25"
+                                                    },
+                                                    "timestamp_original": {
+                                                        "description": "Timestamp original do registro",
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-01-15T14:30:25.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso negado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Acesso negado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/users": {
             "get": {
                 "tags": [
@@ -998,6 +1114,10 @@
         {
             "name": "CEP",
             "description": "CEP"
+        },
+        {
+            "name": "Reports",
+            "description": "Reports"
         }
     ]
 }

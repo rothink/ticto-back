@@ -95,16 +95,30 @@
                 ]
             }
         },
-        "/api/ponto": {
-            "post": {
+        "/api/cep/{cep}": {
+            "get": {
                 "tags": [
-                    "Ponto"
+                    "CEP"
                 ],
-                "summary": "Registra ponto do funcionário",
-                "operationId": "e73f0e9c8ad18f25efe120cf9efcd2c5",
+                "summary": "Consultar CEP",
+                "description": "Consulta informações de endereço através do CEP utilizando o serviço ViaCEP. Esta rota é pública e não requer autenticação.",
+                "operationId": "consultarCep",
+                "parameters": [
+                    {
+                        "name": "cep",
+                        "in": "path",
+                        "description": "CEP a ser consultado (formato: 00000000 ou 00000-000)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^[0-9]{8}$|^[0-9]{5}-[0-9]{3}$",
+                            "example": "01310100"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Ponto registrado com sucesso",
+                        "description": "CEP encontrado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -113,23 +127,32 @@
                                             "type": "boolean",
                                             "example": true
                                         },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Ponto registrado com sucesso"
-                                        },
                                         "data": {
                                             "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "horario": {
+                                                "cep": {
+                                                    "description": "CEP formatado",
                                                     "type": "string",
-                                                    "example": "14:30:25"
+                                                    "example": "01310-100"
                                                 },
-                                                "data": {
+                                                "endereco": {
+                                                    "description": "Nome da rua/avenida",
                                                     "type": "string",
-                                                    "example": "17/09/2025"
+                                                    "example": "Avenida Paulista"
+                                                },
+                                                "bairro": {
+                                                    "description": "Nome do bairro",
+                                                    "type": "string",
+                                                    "example": "Bela Vista"
+                                                },
+                                                "cidade": {
+                                                    "description": "Nome da cidade",
+                                                    "type": "string",
+                                                    "example": "São Paulo"
+                                                },
+                                                "estado": {
+                                                    "description": "Sigla do estado",
+                                                    "type": "string",
+                                                    "example": "SP"
                                                 }
                                             },
                                             "type": "object"
@@ -140,11 +163,687 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Usuário não autenticado"
+                    "404": {
+                        "description": "CEP não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "CEP não encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "CEP inválido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "CEP deve ter 8 dígitos"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erro interno do servidor"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employees": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Listar funcionários",
+                "operationId": "7fc06f144c1cd7925c5c391a6609f02d",
+                "responses": {
+                    "200": {
+                        "description": "Lista de funcionários",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "funcionarios": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "João Silva"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "joao@empresa.com"
+                                                    },
+                                                    "cpf": {
+                                                        "type": "string",
+                                                        "example": "123.456.789-00"
+                                                    },
+                                                    "cargo": {
+                                                        "type": "string",
+                                                        "example": "Desenvolvedor"
+                                                    },
+                                                    "data_nascimento": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "1990-01-15"
+                                                    },
+                                                    "role": {
+                                                        "type": "string",
+                                                        "example": "employer"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-09-17T10:30:00.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "403": {
-                        "description": "Apenas funcionários podem registrar ponto"
+                        "description": "Acesso negado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Acesso negado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Criar novo funcionário",
+                "operationId": "bfad4edec29b0edbd684a0afbd847510",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "cpf",
+                                    "cargo",
+                                    "data_nascimento",
+                                    "cep",
+                                    "endereco",
+                                    "numero",
+                                    "bairro",
+                                    "cidade",
+                                    "estado"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "João Silva"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "joao@empresa.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "123456"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "123456"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "123.456.789-00"
+                                    },
+                                    "cargo": {
+                                        "type": "string",
+                                        "example": "Desenvolvedor"
+                                    },
+                                    "data_nascimento": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-01-15"
+                                    },
+                                    "cep": {
+                                        "type": "string",
+                                        "example": "01234-567"
+                                    },
+                                    "endereco": {
+                                        "type": "string",
+                                        "example": "Rua das Flores, 123"
+                                    },
+                                    "numero": {
+                                        "type": "string",
+                                        "example": "123"
+                                    },
+                                    "complemento": {
+                                        "type": "string",
+                                        "example": "Apto 45"
+                                    },
+                                    "bairro": {
+                                        "type": "string",
+                                        "example": "Centro"
+                                    },
+                                    "cidade": {
+                                        "type": "string",
+                                        "example": "São Paulo"
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "SP"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Funcionário criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Funcionário criado com sucesso"
+                                        },
+                                        "funcionario": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "João Silva"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "joao@empresa.com"
+                                                },
+                                                "cpf": {
+                                                    "type": "string",
+                                                    "example": "123.456.789-00"
+                                                },
+                                                "cargo": {
+                                                    "type": "string",
+                                                    "example": "Desenvolvedor"
+                                                },
+                                                "data_nascimento": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "1990-01-15"
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "employer"
+                                                },
+                                                "address": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "cep": {
+                                                            "type": "string",
+                                                            "example": "01234-567"
+                                                        },
+                                                        "endereco": {
+                                                            "type": "string",
+                                                            "example": "Rua das Flores, 123"
+                                                        },
+                                                        "numero": {
+                                                            "type": "string",
+                                                            "example": "123"
+                                                        },
+                                                        "complemento": {
+                                                            "type": "string",
+                                                            "example": "Apto 45"
+                                                        },
+                                                        "bairro": {
+                                                            "type": "string",
+                                                            "example": "Centro"
+                                                        },
+                                                        "cidade": {
+                                                            "type": "string",
+                                                            "example": "São Paulo"
+                                                        },
+                                                        "estado": {
+                                                            "type": "string",
+                                                            "example": "SP"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso negado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Acesso negado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "Nome é obrigatório"
+                                                    }
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "E-mail deve ser válido"
+                                                    }
+                                                },
+                                                "cpf": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "CPF inválido."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/employees/{employee}": {
+            "put": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Atualizar funcionário",
+                "operationId": "ff9ab641fc6320c1ad01c01b9b05d536",
+                "parameters": [
+                    {
+                        "name": "employee",
+                        "in": "path",
+                        "description": "ID do funcionário",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "cpf",
+                                    "cargo",
+                                    "data_nascimento",
+                                    "cep",
+                                    "endereco",
+                                    "numero",
+                                    "bairro",
+                                    "cidade",
+                                    "estado"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "João Silva"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "joao@empresa.com"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "123.456.789-00"
+                                    },
+                                    "cargo": {
+                                        "type": "string",
+                                        "example": "Desenvolvedor Senior"
+                                    },
+                                    "data_nascimento": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-01-15"
+                                    },
+                                    "cep": {
+                                        "type": "string",
+                                        "example": "01234-567"
+                                    },
+                                    "endereco": {
+                                        "type": "string",
+                                        "example": "Rua das Flores, 123"
+                                    },
+                                    "numero": {
+                                        "type": "string",
+                                        "example": "123"
+                                    },
+                                    "complemento": {
+                                        "type": "string",
+                                        "example": "Apto 45"
+                                    },
+                                    "bairro": {
+                                        "type": "string",
+                                        "example": "Centro"
+                                    },
+                                    "cidade": {
+                                        "type": "string",
+                                        "example": "São Paulo"
+                                    },
+                                    "estado": {
+                                        "type": "string",
+                                        "example": "SP"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Funcionário atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Funcionário atualizado com sucesso"
+                                        },
+                                        "funcionario": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "João Silva"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "joao@empresa.com"
+                                                },
+                                                "cpf": {
+                                                    "type": "string",
+                                                    "example": "123.456.789-00"
+                                                },
+                                                "cargo": {
+                                                    "type": "string",
+                                                    "example": "Desenvolvedor Senior"
+                                                },
+                                                "data_nascimento": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "1990-01-15"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso negado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Acesso negado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Funcionário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Excluir funcionário",
+                "operationId": "e225f5026a067ec74f6b45726f29e617",
+                "parameters": [
+                    {
+                        "name": "employee",
+                        "in": "path",
+                        "description": "ID do funcionário",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Funcionário excluído com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Funcionário excluído com sucesso"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso negado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Acesso negado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Funcionário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -289,12 +988,16 @@
             "description": "Operações de autenticação"
         },
         {
-            "name": "Ponto",
-            "description": "Operações de registro de ponto"
+            "name": "Employees",
+            "description": "Operações de gerenciamento de funcionários"
         },
         {
             "name": "Users",
             "description": "Operações relacionadas aos usuários"
+        },
+        {
+            "name": "CEP",
+            "description": "CEP"
         }
     ]
 }

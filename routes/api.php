@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Rotas de administrador
     Route::apiResource('funcionarios', FuncionarioController::class);
     Route::get('/relatorios/ponto', [RelatorioController::class, 'ponto']);
+    Route::get('/pontos-registrados', [RelatorioController::class, 'pontosRegistrados']);
 });
 
 // Rotas de usuários

@@ -45,4 +45,33 @@ class RelatorioController extends Controller
             'registros' => $registros
         ]);
     }
+
+    public function pontosRegistrados(Request $request): JsonResponse
+    {
+        if (!Auth::check() || !Auth::user()->isAdmin()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Acesso negado'
+            ], 403);
+        }
+
+        $query = PontoRegistro::with('user');
+
+        if ($request->has('data_inicio') && $request->data_inicio) {
+            $dataInicio = Carbon::parse($request->data_inicio)->startOfDay();
+            $query->where('created_at', '>=', $dataInicio);
+        }
+
+        if ($request->has('data_fim') && $request->data_fim) {
+            $dataFim = Carbon::parse($request->data_fim)->endOfDay();
+            $query->where('created_at', '<=', $dataFim);
+        }
+
+        $registros = $query->orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'success' => true,
+            'registros' => $registros
+        ]);
+    }
 }

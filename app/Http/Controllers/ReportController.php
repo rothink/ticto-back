@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class RelatorioController extends Controller
+class ReportController extends Controller
 {
     public function ponto(Request $request): JsonResponse
     {

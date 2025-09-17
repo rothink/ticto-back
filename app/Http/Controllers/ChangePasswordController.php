@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class TrocarSenhaController extends Controller
+class ChangePasswordController extends Controller
 {
     public function trocar(Request $request): JsonResponse
     {

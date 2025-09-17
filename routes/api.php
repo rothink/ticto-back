@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PontoController;
+use App\Http\Controllers\TrocarSenhaController;
 
 /**
  * @OA\Info(
@@ -24,6 +26,13 @@ use App\Http\Controllers\AuthController;
 // Rotas de autenticação
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+// Rotas de ponto (apenas para funcionários autenticados)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/ponto', [PontoController::class, 'registrar']);
+    Route::get('/ponto/hoje', [PontoController::class, 'registrosHoje']);
+    Route::post('/trocar-senha', [TrocarSenhaController::class, 'trocar']);
+});
 
 // Rotas de usuários
 Route::apiResource('users', UserController::class);

@@ -89,20 +89,20 @@ class EmployeeController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"name","email","password","password_confirmation","cpf","cargo","data_nascimento","cep","endereco","numero","bairro","cidade","estado"},
-     *             @OA\Property(property="name", type="string", example="João Silva"),
-     *             @OA\Property(property="email", type="string", format="email", example="joao@empresa.com"),
+     *             @OA\Property(property="name", type="string", example="Rodrigo"),
+     *             @OA\Property(property="email", type="string", format="email", example="rodrigoluz@ticto.com"),
      *             @OA\Property(property="password", type="string", format="password", example="123456"),
      *             @OA\Property(property="password_confirmation", type="string", format="password", example="123456"),
-     *             @OA\Property(property="cpf", type="string", example="123.456.789-00"),
-     *             @OA\Property(property="cargo", type="string", example="Desenvolvedor"),
-     *             @OA\Property(property="data_nascimento", type="string", format="date", example="1990-01-15"),
-     *             @OA\Property(property="cep", type="string", example="01234-567"),
-     *             @OA\Property(property="endereco", type="string", example="Rua das Flores, 123"),
-     *             @OA\Property(property="numero", type="string", example="123"),
-     *             @OA\Property(property="complemento", type="string", example="Apto 45"),
+     *             @OA\Property(property="cpf", type="string", example="943.399.260-19"),
+     *             @OA\Property(property="cargo", type="string", example="dev"),
+     *             @OA\Property(property="data_nascimento", type="string", format="date", example="1989-12-17"),
+     *             @OA\Property(property="cep", type="string", example="20011-010"),
+     *             @OA\Property(property="endereco", type="string", example="Beco dos Barbeiros"),
+     *             @OA\Property(property="numero", type="string", example="902"),
+     *             @OA\Property(property="complemento", type="string", example="apartamento"),
      *             @OA\Property(property="bairro", type="string", example="Centro"),
-     *             @OA\Property(property="cidade", type="string", example="São Paulo"),
-     *             @OA\Property(property="estado", type="string", example="SP")
+     *             @OA\Property(property="cidade", type="string", example="Rio de Janeiro"),
+     *             @OA\Property(property="estado", type="string", example="RJ")
      *         )
      *     ),
      *     @OA\Response(
@@ -115,23 +115,23 @@ class EmployeeController extends Controller
      *                 property="funcionario",
      *                 type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="João Silva"),
-     *                 @OA\Property(property="email", type="string", example="joao@empresa.com"),
-     *                 @OA\Property(property="cpf", type="string", example="123.456.789-00"),
-     *                 @OA\Property(property="cargo", type="string", example="Desenvolvedor"),
-     *                 @OA\Property(property="data_nascimento", type="string", format="date", example="1990-01-15"),
+     *                 @OA\Property(property="name", type="string", example="Rodrigo"),
+     *                 @OA\Property(property="email", type="string", example="rodrigoluz@live.com"),
+     *                 @OA\Property(property="cpf", type="string", example="014.177.091-03"),
+     *                 @OA\Property(property="cargo", type="string", example="dev"),
+     *                 @OA\Property(property="data_nascimento", type="string", format="date", example="1989-12-17"),
      *                 @OA\Property(property="role", type="string", example="employer"),
      *                 @OA\Property(
      *                     property="address",
      *                     type="object",
      *                     @OA\Property(property="id", type="integer", example=1),
-     *                     @OA\Property(property="cep", type="string", example="01234-567"),
-     *                     @OA\Property(property="endereco", type="string", example="Rua das Flores, 123"),
-     *                     @OA\Property(property="numero", type="string", example="123"),
-     *                     @OA\Property(property="complemento", type="string", example="Apto 45"),
+     *                     @OA\Property(property="cep", type="string", example="20011-010"),
+     *                     @OA\Property(property="endereco", type="string", example="Beco dos Barbeiros"),
+     *                     @OA\Property(property="numero", type="string", example="902"),
+     *                     @OA\Property(property="complemento", type="string", example="apartamento"),
      *                     @OA\Property(property="bairro", type="string", example="Centro"),
-     *                     @OA\Property(property="cidade", type="string", example="São Paulo"),
-     *                     @OA\Property(property="estado", type="string", example="SP")
+     *                     @OA\Property(property="cidade", type="string", example="Rio de Janeiro"),
+     *                     @OA\Property(property="estado", type="string", example="RJ")
      *                 )
      *             )
      *         )

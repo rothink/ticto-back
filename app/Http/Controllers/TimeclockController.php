@@ -8,45 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-/**
- * @OA\Tag(
- *     name="Ponto",
- *     description="Operações de registro de ponto"
- * )
- */
-class PontoController extends Controller
+class TimeclockController extends Controller
 {
-    /**
-     * @OA\Post(
-     *     path="/api/ponto",
-     *     summary="Registra ponto do funcionário",
-     *     tags={"Ponto"},
-     *     security={{"sanctum":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Ponto registrado com sucesso",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string", example="Ponto registrado com sucesso"),
-     *             @OA\Property(
-     *                 property="data",
-     *                 type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="horario", type="string", example="14:30:25"),
-     *                 @OA\Property(property="data", type="string", example="17/09/2025")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Usuário não autenticado"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="Apenas funcionários podem registrar ponto"
-     *     )
-     * )
-     */
     public function registrar(Request $request): JsonResponse
     {
         if (!Auth::check()) {

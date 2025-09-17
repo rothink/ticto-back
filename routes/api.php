@@ -4,10 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PontoController;
-use App\Http\Controllers\TrocarSenhaController;
-use App\Http\Controllers\FuncionarioController;
-use App\Http\Controllers\RelatorioController;
+use App\Http\Controllers\TimeclockController;
+use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ReportController;
 
 /**
  * @OA\Info(
@@ -31,14 +31,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 // Rotas de ponto (apenas para funcionários autenticados)
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/ponto', [PontoController::class, 'registrar']);
-    Route::get('/ponto/hoje', [PontoController::class, 'registrosHoje']);
-    Route::post('/trocar-senha', [TrocarSenhaController::class, 'trocar']);
+    Route::post('/timeclock', [TimeclockController::class, 'registrar']);
+    Route::get('/timeclock/today', [TimeclockController::class, 'registrosHoje']);
+    Route::post('/change-password', [ChangePasswordController::class, 'trocar']);
 
     // Rotas de administrador
-    Route::apiResource('funcionarios', FuncionarioController::class);
-    Route::get('/relatorios/ponto', [RelatorioController::class, 'ponto']);
-    Route::get('/pontos-registrados', [RelatorioController::class, 'pontosRegistrados']);
+    Route::apiResource('employees', EmployeeController::class);
+    Route::get('/reports/timeclock', [ReportController::class, 'ponto']);
+    Route::get('/time-records', [ReportController::class, 'pontosRegistrados']);
 });
 
 // Rotas de usuários

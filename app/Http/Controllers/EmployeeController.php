@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class FuncionarioController extends Controller
+class EmployeeController extends Controller
 {
     public function index(Request $request): JsonResponse
     {

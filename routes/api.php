@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PontoController;
 use App\Http\Controllers\TrocarSenhaController;
+use App\Http\Controllers\FuncionarioController;
+use App\Http\Controllers\RelatorioController;
 
 /**
  * @OA\Info(
@@ -32,6 +34,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/ponto', [PontoController::class, 'registrar']);
     Route::get('/ponto/hoje', [PontoController::class, 'registrosHoje']);
     Route::post('/trocar-senha', [TrocarSenhaController::class, 'trocar']);
+
+    // Rotas de administrador
+    Route::apiResource('funcionarios', FuncionarioController::class);
+    Route::get('/relatorios/ponto', [RelatorioController::class, 'ponto']);
 });
 
 // Rotas de usuários

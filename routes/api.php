@@ -8,12 +8,13 @@ use App\Http\Controllers\TimeclockController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CepController;
 
 /**
  * @OA\Info(
  *     title="API Ticto",
  *     version="1.0.0",
- *     description="API para gerenciamento de usuários",
+ *     description="API para gerenciamento de usuários e funcionários",
  *     @OA\Contact(
  *         email="contato@ticto.com"
  *     )
@@ -23,11 +24,19 @@ use App\Http\Controllers\ReportController;
  *     url="http://localhost",
  *     description="Servidor de desenvolvimento"
  * )
+ *
+ * @OA\Tag(
+ *     name="CEP",
+ *     description="Endpoints para consulta de CEP"
+ * )
  */
 
 // Rotas de autenticação
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+// Rotas públicas
+Route::get('/cep/{cep}', [CepController::class, 'consultar']);
 
 // Rotas de ponto (apenas para funcionários autenticados)
 Route::middleware('auth:sanctum')->group(function () {
